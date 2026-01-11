@@ -10,7 +10,7 @@ class TimeStampModel(models.Model):
 
 class Category(TimeStampModel):
     name = models.CharField(max_length=100)
-    icon = models.CharField(max_length=100, null= True ,blanl=True)
+    icon = models.CharField(max_length=100, null= True ,blank=True)
     description = models.TextField(null=True, blank=True)
 
     def __str__(self):
@@ -26,7 +26,18 @@ class Tag(TimeStampModel):
 
     def __str__(self):
         return self.name
-    
+#Post -Category
+#1 Category cna have M post =>M
+#1 Post is associated to only 1 category => 1
+
+#User - Post
+#1 user can add M posts => M
+#1 post is associated to 1 user =>1
+
+#Post - Tag
+#1 Post cna have M tags =>M
+#1 Tag can be added to M post -> M
+
 class Post(TimeStampModel):
     STATUS_CHOICES = [
         ("active","Active"), #database/django
