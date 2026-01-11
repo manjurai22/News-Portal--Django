@@ -26,6 +26,7 @@ class Tag(TimeStampModel):
 
     def __str__(self):
         return self.name
+    
 #Post -Category
 #1 Category cna have M post =>M
 #1 Post is associated to only 1 category => 1
