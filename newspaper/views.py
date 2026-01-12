@@ -23,7 +23,7 @@ class HomeView(TemplateView):
 
         context["trending_news"]= Post.objects.filter(
             published_at__isnull=False, status="active"
-        ).order_by_("-published_at")[:4]
+        ).order_by("-published_at")[:4]
 
         context["popular_posts"] = Post.objects.filter(
             published_at__isnull=False,status="active"
