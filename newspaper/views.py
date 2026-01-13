@@ -1,9 +1,8 @@
 from django.shortcuts import render 
-from django.views.generic import TemplateView 
-from django.views.generic import ListView
+from django.views.generic import TemplateView, DetailView, ListView
 from django.utils import timezone
 from datetime import timedelta
-from .models import Post
+from .models import Post,Advertisement
 
 
 class HomeView(TemplateView):
@@ -35,6 +34,10 @@ class HomeView(TemplateView):
             published_at__isnull=False, status="active",published_at__gte=one_week_ago
         ).order_by("-published_at","-views_count")[:5]
 
+        context['advertisement'] = (
+            Advertisement.objects.all().order_by("-created_at").first()
+        )
+        
         return context
         
 class PostListView(ListView):
@@ -56,4 +59,19 @@ class PostListView(ListView):
             published_at__isnull=False,
             status="active"
         ).order_by("-published_at")[:5]
+
+        context['advertisement'] = (
+            Advertisement.objects.all().order_by("-created_at").first()
+        )
+
         return context
+    
+class PostDetailView(DetailView):
+    model =Post
+    template_name = "newsportal/detail/detail.html"
+    context_object_name = "post"
+
+    def get_queryset(self):
+        query = super().get_queryset()
+        query = query.filter(published_at__isnull=False, status="active")
+        return query

@@ -36,7 +36,7 @@ class Tag(TimeStampModel):
 #1 post is associated to 1 user =>1
 
 #Post - Tag
-#1 Post cna have M tags =>M
+#1 Post can have M tags =>M
 #1 Tag can be added to M post -> M
 
 class Post(TimeStampModel):
@@ -56,4 +56,11 @@ class Post(TimeStampModel):
     tag = models.ManyToManyField(Tag)
 
     def __str__(self):
+        return self.title
+        
+class Advertisement(TimeStampModel):
+    title = models.CharField(max_length=100)
+    image = models.ImageField(upload_to="advertisement/%Y/%m/%d",blank=False)
+
+    def _str__(self):
         return self.title
