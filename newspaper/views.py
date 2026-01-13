@@ -4,8 +4,23 @@ from django.utils import timezone
 from datetime import timedelta
 from .models import Post,Advertisement
 
+class SideBarMixin:
+    def get_context_data(self,**kwargs):
+        context = super().get_context_data(**kwargs)
 
-class HomeView(TemplateView):
+        context["popular_posts"] = Post.objects.filter(
+            published_at__isnull=False,
+            status="active"
+        ).order_by("-published_at")[:5]
+
+        context['advertisement'] = (
+            Advertisement.objects.all().order_by("-created_at").first()
+        )
+
+        return context
+
+
+class HomeView(SideBarMixin, TemplateView):
     template_name ="newsportal/home.html"
 #template ma data pathaunu cha bhaney use get_context_data
     def get_context_data(self,**kwargs):
@@ -24,23 +39,15 @@ class HomeView(TemplateView):
         context["trending_news"]= Post.objects.filter(
             published_at__isnull=False, status="active"
         ).order_by("-published_at")[:4]
-
-        context["popular_posts"] = Post.objects.filter(
-            published_at__isnull=False,status="active"
-        ).order_by("-published_at")[:5]
         
         one_week_ago = timezone.now() - timedelta(days=7)
         context["weekly_top_posts"] = Post.objects.filter(
             published_at__isnull=False, status="active",published_at__gte=one_week_ago
         ).order_by("-published_at","-views_count")[:5]
 
-        context['advertisement'] = (
-            Advertisement.objects.all().order_by("-created_at").first()
-        )
-        
         return context
         
-class PostListView(ListView):
+class PostListView(SideBarMixin, ListView):
     model = Post
     template_name = "newsportal/list/list.html"
     context_object_name = "posts"
@@ -51,22 +58,9 @@ class PostListView(ListView):
             published_at__isnull=False,
             status="active"
         ).order_by("-published_at")
+
     
-    def get_context_data(self,**kwargs):
-        context = super().get_context_data(**kwargs)
-
-        context["popular_posts"] = Post.objects.filter(
-            published_at__isnull=False,
-            status="active"
-        ).order_by("-published_at")[:5]
-
-        context['advertisement'] = (
-            Advertisement.objects.all().order_by("-created_at").first()
-        )
-
-        return context
-    
-class PostDetailView(DetailView):
+class PostDetailView(SideBarMixin , DetailView):
     model =Post
     template_name = "newsportal/detail/detail.html"
     context_object_name = "post"
@@ -75,3 +69,4 @@ class PostDetailView(DetailView):
         query = super().get_queryset()
         query = query.filter(published_at__isnull=False, status="active")
         return query
+    
