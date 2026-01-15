@@ -86,3 +86,18 @@ class PostDetailView(SideBarMixin , DetailView):
             .order_by("-published_at","-views_count")[:2]
         )
         return context
+    
+class PostByCategoryView(SideBarMixin,ListView):
+    model = Post
+    template_name = "newsportal/list/list.html"
+    context_object_name = "posts"
+    paginate_by = 1
+
+    def get_query(self):
+        query = super().get_queryset()
+        query = query.filter(
+            published_at__isnull=False,
+            status = "active",
+            category__id=self.kwargs["category_id"],
+        ).order_by("-published_at")
+        return query
