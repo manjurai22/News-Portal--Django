@@ -44,7 +44,6 @@ class HomeView(SideBarMixin, TemplateView):
         context["weekly_top_posts"] = Post.objects.filter(
             published_at__isnull=False, status="active",published_at__gte=one_week_ago
         ).order_by("-published_at","-views_count")[:5]
-
         return context
         
 class PostListView(SideBarMixin, ListView):
@@ -58,8 +57,7 @@ class PostListView(SideBarMixin, ListView):
             published_at__isnull=False,
             status="active"
         ).order_by("-published_at")
-
-    
+ 
 class PostDetailView(SideBarMixin , DetailView):
     model =Post
     template_name = "newsportal/detail/detail.html"
@@ -70,3 +68,22 @@ class PostDetailView(SideBarMixin , DetailView):
         query = query.filter(published_at__isnull=False, status="active")
         return query
     
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+
+    #     #increase the viewcount of currently viewed post
+    #     current_post = self.get_object
+    #     current_post.views_count += 1
+    #     current_post.save()
+
+    #     context ["related_articles"] = (
+    #         Post.objects.filter(
+    #             published_at__isnull=False,
+    #             category=self.object.category,
+    #             status="active"
+    #         )
+    #         .exclude(id=self.object.id)
+    #         .order_by("-published_at","-views_count")[:2]
+    #     )
+
+    #     return context

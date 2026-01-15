@@ -4,9 +4,11 @@
           <div class="card mb-4 shadow-sm news-list-item">
             <div class="row g-0">
               <div class="col-md-4">
-                <img src="https://placehold.co/300x200/28a745/ffffff?text=News+1"
-                     class="img-fluid rounded-start"
-                     alt="News 1" />
+                <img src="{{ post.featured_image.url }}"
+                    width = "300"
+                    height ="250"
+                    class="img-fluid rounded-start"
+                    alt="News 1" />
               </div>
               <div class="col-md-8">
                 <div class="card-body">
@@ -15,7 +17,7 @@
                   <p class="card-text">
                     <small class="text-muted">Published: {{ post.published_at|date:"F j, Y"}}</small>
                   </p>
-                  <a href="article.html" class="btn btn-outline-success btn-sm">Read More</a>
+                  <a href="{% url 'post-detail' post.pk %}" class="btn btn-outline-success btn-sm">Read More</a>
                 </div>
               </div>
             </div>
