@@ -64,4 +64,20 @@ class Advertisement(TimeStampModel):
 
     def _str__(self):
         return self.title
-    
+
+
+class Comment(TimeStampModel):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    user = models.ForeignKey("auth.User", on_delete=models.CASCADE)
+    content = models.TextField()
+#User - Post - Comment
+
+#Post - Comment
+#1 post can have M comments => M
+#1 comment is associated to post => 1
+#ForeignKey() => Comment
+
+#User - Comment
+#1 user can add M comments => M
+#1 comment is associated to 1 user =>1
+#ForeignKey() => Comment
