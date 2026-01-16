@@ -24,13 +24,17 @@
                  href="#"
                  role="button"
                  data-bs-toggle="dropdown"
-                 aria-expanded="false">Categories</a>
-              
+                 aria-expanded="false">
+                 Categories
+              </a>
               <ul class="dropdown-menu">
                 {% for category in categories %}
                   <li>
-                    <a class="dropdown-item" href="{% url 'post-by-category' category.id %}">{{ category.name|title}}</a>
-                  <li>
+                    <a class="dropdown-item" 
+                    href="{% url 'post-by-category' category.id %}">
+                      {{ category.name|title }}
+                    </a>
+                  </li>
                 {% endfor %}
                 <li>
                   <hr class="dropdown-divider" />

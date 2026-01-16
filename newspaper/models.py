@@ -64,3 +64,4 @@ class Advertisement(TimeStampModel):
 
     def _str__(self):
         return self.title
+    

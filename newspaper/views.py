@@ -2,11 +2,13 @@ from django.shortcuts import render
 from django.views.generic import TemplateView, DetailView, ListView
 from django.utils import timezone
 from datetime import timedelta
-from .models import Post,Advertisement
+from .models import Post,Advertisement,Category
 
 class SideBarMixin:
     def get_context_data(self,**kwargs):
         context = super().get_context_data(**kwargs)
+        
+        context["categories"] = Category.objects.all()
 
         context["popular_posts"] = Post.objects.filter(
             published_at__isnull=False,
@@ -93,7 +95,7 @@ class PostByCategoryView(SideBarMixin,ListView):
     context_object_name = "posts"
     paginate_by = 1
 
-    def get_query(self):
+    def get_queryset(self):
         query = super().get_queryset()
         query = query.filter(
             published_at__isnull=False,
