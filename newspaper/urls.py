@@ -11,4 +11,5 @@ urlpatterns =[
         name="post-by-category",
     ),
     path("categories/", views.CategoryListView.as_view(), name="categories"),
+    path("tags/", views.TagListView.as_view(), name="tags"),
 ]

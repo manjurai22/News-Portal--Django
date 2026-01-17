@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views.generic import TemplateView, DetailView, ListView
 from django.utils import timezone
 from datetime import timedelta
-from .models import Post,Advertisement,Category
+from .models import Post, Advertisement, Category, Tag
 
 class SideBarMixin:
     def get_context_data(self,**kwargs):
@@ -107,3 +107,8 @@ class CategoryListView(ListView):
     model = Category
     template_name = "newsportal/categories.html"
     context_object_name = "categories"
+
+class TagListView(ListView):
+    model = Tag
+    template_name = "newsportal/tag.html"
+    context_object_name = "tags"
