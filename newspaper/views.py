@@ -1,8 +1,12 @@
 from django.shortcuts import render 
-from django.views.generic import TemplateView, DetailView, ListView
+from django.views.generic import TemplateView, DetailView, ListView , CreateView
 from django.utils import timezone
+from django.contrib import messages
+from django.contrib.messages.views import SuccessMessageMixin
 from datetime import timedelta
-from .models import Post, Advertisement, Category, Tag
+from newspaper.forms import ContactForm
+from django.urls import reverse_lazy
+from .models import Post, Advertisement, Category, Tag,Contact
 
 class SideBarMixin:
     def get_context_data(self,**kwargs):
@@ -112,3 +116,18 @@ class TagListView(ListView):
     model = Tag
     template_name = "newsportal/tag.html"
     context_object_name = "tags"
+
+class ContactCreateView(SuccessMessageMixin ,CreateView):
+    model = Contact
+    template_name = "newsportal/contact.html"
+    form_class = ContactForm
+    success_url = reverse_lazy("contact")
+    success_message ="Your message has been sent successfully!"
+
+    def from_invalid(self,form):
+        messages.error(
+            self.request,
+            "There was an error sending your message. Please check the form.",
+        )
+        return super().form_invalid(form)
+

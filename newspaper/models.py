@@ -81,3 +81,15 @@ class Comment(TimeStampModel):
 #1 user can add M comments => M
 #1 comment is associated to 1 user =>1
 #ForeignKey() => Comment
+
+class Contact(TimeStampModel):
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    subject = models.CharField(max_length=200)
+    message = models.TextField()
+
+    def _str__(self):
+        return self.name
+    
+    class Meta:
+        ordering = ["created_at"]
