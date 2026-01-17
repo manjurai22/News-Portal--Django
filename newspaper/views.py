@@ -7,8 +7,6 @@ from .models import Post,Advertisement,Category
 class SideBarMixin:
     def get_context_data(self,**kwargs):
         context = super().get_context_data(**kwargs)
-        
-        context["categories"] = Category.objects.all()
 
         context["popular_posts"] = Post.objects.filter(
             published_at__isnull=False,
@@ -103,3 +101,9 @@ class PostByCategoryView(SideBarMixin,ListView):
             category__id=self.kwargs["category_id"],
         ).order_by("-published_at")
         return query
+    
+
+class CategoryListView(ListView):
+    model = Category
+    template_name = "newsportal/categories.html"
+    context_object_name = "categories"
