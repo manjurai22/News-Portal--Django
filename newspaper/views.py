@@ -6,7 +6,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from datetime import timedelta
 from newspaper.forms import ContactForm
 from django.urls import reverse_lazy
-from .models import Post, Advertisement, Category, Tag,Contact
+from .models import Post, Advertisement, Category, Tag,Contact, OurTeam
 
 class SideBarMixin:
     def get_context_data(self,**kwargs):
@@ -131,3 +131,10 @@ class ContactCreateView(SuccessMessageMixin, CreateView):
         )
         return super().form_invalid(form)
 
+class AboutUsView(TemplateView):
+    template_name = 'newsportal/about.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["our_teams"] = OurTeam.objects.all()
+        return context

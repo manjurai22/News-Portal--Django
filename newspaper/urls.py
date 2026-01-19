@@ -13,4 +13,6 @@ urlpatterns =[
     path("categories/", views.CategoryListView.as_view(), name="categories"),
     path("tags/", views.TagListView.as_view(), name="tags"),
     path("contact/", views.ContactCreateView.as_view(), name="contact"),
+    path("about-us/", views.AboutUsView.as_view(), name="about-us"),
+
 ]
