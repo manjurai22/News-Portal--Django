@@ -127,4 +127,13 @@ MEDIA_ROOT = "media"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-#configure 
+#configure django messages to use bootstrap alert classes
+from django.contrib.messages import constants as messages 
+
+MESSAGE_TAGS = {
+    messages.DEBUG: "secondary",
+    messages.INFO: "info",
+    messages.SUCCESS: "success",
+    messages.WARNING: "warning",
+    messages.ERROR: "danger",
+}
