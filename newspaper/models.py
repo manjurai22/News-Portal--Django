@@ -102,3 +102,17 @@ class OurTeam(TimeStampModel):
 
     def _str__(self):
         return self.name
+    
+class UserProfile(TimeStampModel):
+    user = models.OneToOneField("auth.user", on_delete = models.CASCADE)
+    image = models.ImageField(upload_to="user_images/%Y/%m/%d", blank=False)
+    address = models.CharField(max_length=200)
+    biography =models.TextField()
+
+    def __str__(self):
+        return self.user.username
+    
+class Comment(TimeStampModel):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    user = models.ForeignKey("auth.user", on_delete=models.CASCADE)
+    content =  models.TextField()

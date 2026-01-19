@@ -17,10 +17,10 @@ class RegisterView(View):
             user = form.save()
 
             # Optional: log the user in immediately after registration
-            #login(request, user)
+            login(request, user)
 
             # Redirect to login page after successful registration
-            return redirect("login")
-            #return redirect('home')
+            #return redirect("login")
+            return redirect('home')
 
         return render(request, "registration/register.html", {"form": form})

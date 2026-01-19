@@ -4,9 +4,10 @@ from django.utils import timezone
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from datetime import timedelta
-from newspaper.forms import ContactForm
-from django.urls import reverse_lazy
-from .models import Post, Advertisement, Category, Tag,Contact, OurTeam
+from newspaper.forms import CommentForm, ContactForm
+from django.urls import reverse_lazy, reverse
+from django.views.generic.edit import FormMixin
+from .models import Post, Advertisement, Category, Tag,Contact, OurTeam, Post, Comment
 
 class SideBarMixin:
     def get_context_data(self,**kwargs):
@@ -62,10 +63,11 @@ class PostListView(SideBarMixin, ListView):
             status="active"
         ).order_by("-published_at")
  
-class PostDetailView(SideBarMixin , DetailView):
+class PostDetailView(SideBarMixin , FormMixin, DetailView):
     model =Post
     template_name = "newsportal/detail/detail.html"
     context_object_name = "post"
+    form_class = CommentForm
 
     def get_queryset(self):
         query = super().get_queryset()
@@ -88,9 +90,34 @@ class PostDetailView(SideBarMixin , DetailView):
             )
             .exclude(id=self.object.id)
             .order_by("-published_at","-views_count")[:2]
-        )
+        ) 
+        context["comments"] = Comment.objects.filter(post=self.object).order_by("-created_at")   
         return context
     
+    def get_success_url(self):
+        return reverse("post-detail", kwargs={"pk": self.object.pk})
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = self.get_form()
+
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        comment = form.save(commit=False)
+        comment.post = self.object
+        comment.user = self.request.user
+        comment.save()
+
+        messages.success(
+            self.request,
+            "Your comment has been added successfully."
+        )
+        return super().form_valid(form) 
+
 class PostByCategoryView(SideBarMixin,ListView):
     model = Post
     template_name = "newsportal/list/list.html"
