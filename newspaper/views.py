@@ -117,14 +117,14 @@ class TagListView(ListView):
     template_name = "newsportal/tag.html"
     context_object_name = "tags"
 
-class ContactCreateView(SuccessMessageMixin ,CreateView):
+class ContactCreateView(SuccessMessageMixin, CreateView):
     model = Contact
     template_name = "newsportal/contact.html"
     form_class = ContactForm
     success_url = reverse_lazy("contact")
-    success_message ="Your message has been sent successfully!"
+    success_message =" Your message has been sent successfully!"
 
-    def from_invalid(self,form):
+    def from_invalid(self, form):
         messages.error(
             self.request,
             "There was an error sending your message. Please check the form.",
