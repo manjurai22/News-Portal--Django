@@ -27,5 +27,46 @@
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
     <!-- Custom JS -->
     <script src="{% static 'js/script.js' %}"></script>
+  
+    <script>
+      $(document).ready(function () {
+        $("#newsletter_side_form").submit(function (e) {
+          e.preventDefault();
+
+          let serializedData = $(this).serialize();
+
+          $.ajax({
+            type: "POST",
+            url: "{% url 'newsletter' %}",
+            data: serializedData,
+
+            success: function (response) {
+              console.log("Success", response)
+              $("#newsletter_side_message").html(`
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            ${response.message}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    `);
+
+            },
+
+            error: function (response) {
+              console.log("Failure", response)
+              $('#newsletter_side_message').html(`
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                               ${response.responseJSON.message}
+                              <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                      aria-label="Close"></button>
+                            </div>
+                          
+                `);
+
+
+            },
+          });
+        });
+      });
+    </script>
   </body>
 </html>
