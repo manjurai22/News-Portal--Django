@@ -1,5 +1,5 @@
 from django.shortcuts import render 
-from django.views.generic import TemplateView, DetailView, ListView , CreateView
+from django.views.generic import TemplateView, DetailView, ListView , CreateView, View
 from django.utils import timezone
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
@@ -7,6 +7,7 @@ from datetime import timedelta
 from newspaper.forms import CommentForm, ContactForm
 from django.urls import reverse_lazy, reverse
 from django.views.generic.edit import FormMixin
+from django.http import JsonResponse
 from .models import Post, Advertisement, Category, Tag,Contact, OurTeam, Post, Comment
 
 class SideBarMixin:
@@ -165,3 +166,38 @@ class AboutUsView(TemplateView):
         context = super().get_context_data(**kwargs)
         context["our_teams"] = OurTeam.objects.all()
         return context
+    
+class NewsletterView(View):
+
+    def post(self, request):
+        is_ajax = request.headers.get("x-requested-with")
+
+        if is_ajax == "XMLHttpRequest":
+            form = NewsletterForm(request.POST)
+
+            if form.is_valid():
+                form.save()
+                return JsonResponse(
+                    {
+                        "success": True,
+                        "message": "Successfully subscribed to the newsletter.",
+                    },
+                    status=201,
+                )
+            else:
+                return JsonResponse(
+                    {
+                        "success": False,
+                        "message": "Cannot subscribe to the newsletter.",
+                    },
+                    status=400,
+                )
+
+        else:
+            return JsonResponse(
+                {
+                    "success": False,
+                    "message": "Cannot process. Must be an AJAX XMLHttpRequest",
+                },
+                status=400,
+            )
