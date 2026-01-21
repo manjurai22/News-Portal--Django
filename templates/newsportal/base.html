@@ -68,5 +68,20 @@
         });
       });
     </script>
+    
+  <script>
+        $(".page-link").click(function (e) {
+            e.preventDefault();
+            let url = new URL(window.location.href);
+            let searchParams = url.searchParams.get("query") || ""; // nepal
+            const page = $(this).attr("href").replace("?page=", "");
+            url.searchParams.set("page", page);
+            if (searchParams) {
+                url.searchParams.set("query", searchParams);
+            }// ?page=2&query=nepal
+            window.location.href = url;
+        });
+    </script>
+
   </body>
 </html>
