@@ -4,7 +4,7 @@ from django.utils import timezone
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from datetime import timedelta
-from newspaper.forms import CommentForm, ContactForm
+from newspaper.forms import CommentForm, ContactForm, NewsLetterForm
 from django.urls import reverse_lazy, reverse
 from django.views.generic.edit import FormMixin
 from django.http import JsonResponse

@@ -111,14 +111,15 @@ class UserProfile(TimeStampModel):
 
     def __str__(self):
         return self.user.username
-    
-class Comment(TimeStampModel):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    user = models.ForeignKey("auth.user", on_delete=models.CASCADE)
-    content =  models.TextField()
 
 class Newsletter(TimeStampModel):
     email = models.EmailField(unique=True)
 
     def _str__(self):
-        return self.email
+        return self.email 
+
+class Comment(TimeStampModel):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    user = models.ForeignKey("auth.user", on_delete=models.CASCADE)
+    content =  models.TextField()
+

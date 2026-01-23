@@ -1,5 +1,5 @@
 from django.contrib import admin
-from newspaper.models import Category, Comment, Post,Tag,Advertisement,Contact,OurTeam, UserProfile
+from newspaper.models import Category, Comment, Post,Tag,Advertisement,Contact,OurTeam, UserProfile, Newsletter
 
 # Register your models here.
 admin.site.register(Post)
@@ -10,3 +10,4 @@ admin.site.register(Contact)
 admin.site.register(OurTeam)
 admin.site.register(UserProfile)
 admin.site.register(Comment)
+admin.site.register(Newsletter)
