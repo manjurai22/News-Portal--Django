@@ -12,7 +12,7 @@
                 <div class="card h-100 shadow-sm list-item-card">
                     <div class="card-body">
                         <h5 class="card-title">
-                            <a href="category.html"><i class="{{ category.icon }} me-2"></i>
+                            <a href="{% url 'post-by-category' category.id %}"><i class="{{ category.icon }} me-2"></i>
                                 {{ category.name }}
                             </a>
                         </h5>
