@@ -13,5 +13,10 @@ router.register(r"post", views.PostViewSet)
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
     path("", include(router.urls)),
+    path(
+        "post-by-category/<int:category_id>/",
+         views.PostListByCategoryView.as_view(),
+         name="post-list-by-category-api",
+    ),
     path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
 ]
