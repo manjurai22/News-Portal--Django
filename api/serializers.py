@@ -2,9 +2,9 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.contrib.auth.models import Group, User
-from rest_framework import serializers
+from rest_framework import serializers, viewsets, permissions, exceptions
 from newspaper.models import Tag, Post
-from newspaper.models import Category, Newsletter
+from newspaper.models import Category, Newsletter, Contact, Comment
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -62,3 +62,18 @@ class NewsletterSerializer(serializers.ModelSerializer):
     class Meta:
         model = Newsletter
         fields = "__all__"
+
+class ContactSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Contact
+        fields = "__all__"
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ["id", "content", "created_at", "post", "user"]
+        extra_kwargs = {
+            "post": {"read_only": True},
+            "user": {"read_only": True},
+            "created_at": {"read_only": True},
+        }
